@@ -21,7 +21,8 @@ ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Install sdk elements
-RUN echo "yes" | android update sdk --all --force --no-ui --filter "platform-tools,tools,build-tools-23.0.3,android-23,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services,sys-img-armeabi-v7a-android-23"
+RUN echo "yes" | android update sdk --all --force --no-ui --filter "tools"
+RUN echo "yes" | android update sdk --all --force --no-ui --filter "platform-tools,build-tools-23.0.3,android-23,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services,sys-img-armeabi-v7a-android-23"
 
 RUN which adb
 RUN which android
