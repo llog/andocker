@@ -10,15 +10,17 @@ RUN apt-get install -y oracle-java8-installer
 
 ## Install Deps
 
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl htop psmisc unzip
 
 ## Install Android SDK
 
 RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root.root android-sdk-linux
+RUN cd /opt && wget --output-document=android-ndk-r11c-linux-x86_64.zip --quiet http://dl.google.com/android/repository/android-ndk-r11c-linux-x86_64.zip && unzip android-ndk-r11c-linux-x86_64.zip && rm -f android-ndk-r11c-linux-x86_64.zip && chown -R root.root android-ndk-r11c
 
 # Setup environment
 ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+ENV ANDROID_NDK_HOME /opt/android-ndk-r11c
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:$ANDROID_NDK_HOME
 
 # Install sdk elements
 RUN echo "yes" | android update sdk --all --force --no-ui --filter "tools"
