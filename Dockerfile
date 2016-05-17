@@ -21,7 +21,7 @@ RUN cd /opt && wget --output-document=android-ndk-r11c-linux-x86_64.zip --quiet 
 # Setup environment
 ENV ANDROID_HOME /opt/android-sdk-linux
 ENV ANDROID_NDK_HOME /opt/android-ndk-r11c
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:$ANDROID_NDK_HOME
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_NDK_HOME}
 
 # Install sdk elements
 RUN echo "yes" | android update sdk --all --force --no-ui --filter "tools"
@@ -29,6 +29,7 @@ RUN echo "yes" | android update sdk --all --force --no-ui --filter "platform-too
 
 RUN which adb
 RUN which android
+RUN which ndk-build
 
 # Create emulator
 RUN echo "no" | android create avd \
