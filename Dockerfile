@@ -11,7 +11,7 @@ RUN apt-get install -y oracle-java8-installer
 ## Install Deps
 
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl
-RUN apt-get install -y psmisc htop unzip vim make gradle bash-completion cloc net-tools iputils-ping netcat
+RUN apt-get install -y psmisc htop unzip vim make gradle bash-completion cloc net-tools iputils-ping netcat openssh-server
 
 ## Install Android SDK
 
