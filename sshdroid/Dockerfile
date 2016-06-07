@@ -2,8 +2,8 @@ FROM huaixiaoz/andocker:latest
 MAINTAINER huaixiaoz "hello@itmp.top"
 
 # Setup environment
-RUN mv ~/.bashrc ~/.bashrc~
-COPY ./.bashrc ~/.bashrc
+RUN mv /root/.bashrc /root/.bashrc~
+COPY ./.bashrc /root/.bashrc
 #ENV ANDROID_HOME /opt/android-sdk-linux
 #ENV ANDROID_NDK_HOME /opt/android-ndk-r11c
 #ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tool
