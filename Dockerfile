@@ -66,14 +66,19 @@ RUN which android
 RUN which ndk-build
 
 # Create emulator
-RUN echo "no" | android create avd \
-        --force \
-        --device "Nexus 5" \
-        --name test \
-        --target android-23 \
-        --abi armeabi-v7a \
-        --skin WVGA800 \
-        --sdcard 100M
+ENV ANDROID_EMULATOR system-images;android-26;google_apis_playstore;x86
+RUN echo "no" | avdmanager create avd -n test -k $ANDROID_EMULATOR
+
+############# deleted ##############
+#RUN echo "no" | android create avd \
+#        --force \
+#        --device "Nexus 5" \
+#        --name test \
+#        --target android-23 \
+#        --abi armeabi-v7a \
+#        --skin WVGA800 \
+#        --sdcard 100M
+############# deleted ##############
 
 # Cleaning
 RUN  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get clean
