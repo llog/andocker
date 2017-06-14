@@ -78,7 +78,7 @@ RUN echo "yes" | sdkmanager $ANDROID_PACKAGES
 
 RUN which adb
 RUN which android
-RUN which ndk-build
+## RUN which ndk-build
 
 # Create emulator
 ## ENV ANDROID_EMULATOR system-images;android-26;google_apis_playstore;x86

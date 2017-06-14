@@ -4,15 +4,17 @@ services: docker
 env:
   - NDK=ndk EMULATOR=emulator
   - NDK=ndk
-  - NULL=null
+  - MINIMUM=minimum
 
 install:
   - git clone https://github.com/llog/andocker.git ~/andocker
 
 before_script:
   - env | sort
-  - cd "${NDK}${EMULATOR:+/${EMULATOR}}${NULL}"
-  - image="andocker:${NDK}${EMULATOR:+-$EMULATOR}${NULL}"
+  - path="${NDK}${EMULATOR:+/${EMULATOR}}${MINIMUM}"
+  - cd ${path}
+  - image="andocker:${NDK}${EMULATOR:+-$EMULATOR}${MINIMUM}"
+  - env | sort
   
 script:
   - travis_retry docker build -t "$image" .
