@@ -44,12 +44,11 @@ ENV SDK_TOOL_URL=https://dl.google.com/android/repository/$SDK_TOOL_FILENAME \
 ENV  PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$ANDROID_NDK_HOME:$GRADLE_HOME/bin
 
 ## Install Gradle
-Run mkdir -p $GRADLE_HOME && \
-  cd $GRADLE_HOME && \
+Run cd /opt && \
   wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
   unzip gradle.zip && \
   rm gradle.zip && \
-  mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/"
+  mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}"
 
 RUN cd /opt && wget --output-document=$SDK_TOOL_FILENAME --quiet $SDK_TOOL_URL && \
   unzip $SDK_TOOL_FILENAME -d $ANDROID_HOME && rm -f $SDK_TOOL_FILENAME   && chown -R root.root $ANDROID_HOME
