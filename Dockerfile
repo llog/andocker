@@ -16,6 +16,7 @@ MAINTAINER huaixiaoz "hello@ifnot.cc"
 ## Install oracle java8
 ## Install java8
 RUN apt-get update && \
+  apt-get dist-upgrade -y && \
   apt-get install -y software-properties-common && \
   add-apt-repository -y ppa:webupd8team/java && \
   (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections) && \
@@ -34,16 +35,20 @@ RUN apt-get update && apt-get install -y psmisc htop vim make gradle bash-comple
 ## Install Android SDK
 ARG SDK_TOOL_FILENAME=sdk-tools-linux-3859397.zip
 ENV SDK_TOOL_URL=https://dl.google.com/android/repository/$SDK_TOOL_FILENAME \
-  ANDROID_APIS="android-10,android-15,android-16,android-17,android-18,android-19,android-20,android-21,android-22,android-23,android-24,android-25" \
   GRADLE_HOME="/usr/share/gradle" \
   ANDROID_HOME="/opt/android" \
+  ANDROID_NDK_HOME="/opt/android/ndk-bundle" \
   ANDROID_BUILD_TOOLS_VERSION=26.0.0
 #  ANDROID_TOOLS=tools \
-ENV  PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$ANDROID_HOME/ndk-bundle:$GRADLE_HOME/bin
+ENV  PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$ANDROID_NDK_HOME:$GRADLE_HOME/bin
 
 RUN cd /opt && wget --output-document=$SDK_TOOL_FILENAME --quiet $SDK_TOOL_URL && \
   unzip $SDK_TOOL_FILENAME -d $ANDROID_HOME && rm -f $SDK_TOOL_FILENAME   && chown -R root.root $ANDROID_HOME
-#RUN cd /opt && wget --output-document=android-ndk-r11c-linux-x86_64.zip --quiet http://dl.google.com/android/repository/android-ndk-r11c-linux-x86_64.zip && unzip android-ndk-r11c-linux-x86_64.zip && rm -f android-ndk-r11c-linux-x86_64.zip && chown -R root.root android-ndk-r11c
+
+############# deleted ##############
+# RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root.root android-sdk-linux
+# RUN cd /opt && wget --output-document=android-ndk-r11c-linux-x86_64.zip --quiet http://dl.google.com/android/repository/android-ndk-r11c-linux-x86_64.zip && unzip android-ndk-r11c-linux-x86_64.zip && rm -f android-ndk-r11c-linux-x86_64.zip && chown -R root.root android-ndk-r11c
+############# deleted ##############
 
 ### update tools
 RUN echo "yes" | sdkmanager --update
@@ -81,7 +86,7 @@ RUN echo "no" | avdmanager create avd -n test -k $ANDROID_EMULATOR
 ############# deleted ##############
 
 # Cleaning
-RUN  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get clean
+# RUN  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get clean
 
 # GO to workspace
 RUN mkdir -p /opt/workspace
