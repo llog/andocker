@@ -49,7 +49,7 @@ Run mkdir -p $GRADLE_HOME && \
   wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
   unzip gradle.zip && \
   rm gradle.zip && \
-  && mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/"
+  mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/"
 
 RUN cd /opt && wget --output-document=$SDK_TOOL_FILENAME --quiet $SDK_TOOL_URL && \
   unzip $SDK_TOOL_FILENAME -d $ANDROID_HOME && rm -f $SDK_TOOL_FILENAME   && chown -R root.root $ANDROID_HOME
