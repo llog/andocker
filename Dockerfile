@@ -28,7 +28,7 @@ ENV JAVA8_HOME=/usr/lib/jvm/java-8-oracle \
   JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
 ## Install Deps
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages unzip expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages unzip expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/*
 ## Custom Tools
 RUN apt-get update && apt-get install -y psmisc htop vim make tree bash-completion cloc net-tools iputils-ping netcat cmake ninja-build openssh-server && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
