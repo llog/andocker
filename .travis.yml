@@ -14,8 +14,8 @@ before_script:
   - path="${NDK}${EMULATOR:+/${EMULATOR}}${MINIMUM}"
   - cd ${path}
   - image="andocker:${NDK}${EMULATOR:+-$EMULATOR}${MINIMUM}"
-  - env | sort
-  
+  - pwd && echo ${path} && echo ${image}
+
 script:
   - travis_retry docker build -t "$image" .
 
