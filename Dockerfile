@@ -10,7 +10,7 @@ MAINTAINER huaixiaoz "hello@ifnot.cc"
 #  apt-get update && \
 #  apt-get install -y oracle-java7-installer && \
 #  apt-get clean && \
-#  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+#  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/*
 #ENV JAVA7_HOME /usr/lib/jvm/java-7-oracle
 
 ## Install oracle java8
@@ -23,24 +23,32 @@ RUN apt-get update && \
   apt-get update && \
   apt-get install -y oracle-java8-installer && \
   apt-get clean && \
-  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/*
 ENV JAVA8_HOME=/usr/lib/jvm/java-8-oracle \
   JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
 ## Install Deps
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages unzip expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ## Custom Tools
-RUN apt-get update && apt-get install -y psmisc htop vim make gradle bash-completion cloc net-tools iputils-ping netcat cmake ninja-build openssh-server && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y psmisc htop vim make tree bash-completion cloc net-tools iputils-ping netcat cmake ninja-build openssh-server && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ## Install Android SDK
 ARG SDK_TOOL_FILENAME=sdk-tools-linux-3859397.zip
 ENV SDK_TOOL_URL=https://dl.google.com/android/repository/$SDK_TOOL_FILENAME \
-  GRADLE_HOME="/usr/share/gradle" \
+  GRADLE_HOME="/opt/gradle" \
+  GRADLE_VERSION=3.5 \
   ANDROID_HOME="/opt/android" \
   ANDROID_NDK_HOME="/opt/android/ndk-bundle" \
   ANDROID_BUILD_TOOLS_VERSION=26.0.0
 #  ANDROID_TOOLS=tools \
 ENV  PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$ANDROID_NDK_HOME:$GRADLE_HOME/bin
+
+## Install Gradle
+Run cd $GRADLE_HOME && \
+  wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
+  unzip gradle.zip && \
+  rm gradle.zip && \
+  && mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/"
 
 RUN cd /opt && wget --output-document=$SDK_TOOL_FILENAME --quiet $SDK_TOOL_URL && \
   unzip $SDK_TOOL_FILENAME -d $ANDROID_HOME && rm -f $SDK_TOOL_FILENAME   && chown -R root.root $ANDROID_HOME
@@ -72,7 +80,8 @@ RUN which ndk-build
 
 # Create emulator
 ENV ANDROID_EMULATOR system-images;android-26;google_apis_playstore;x86
-RUN echo "no" | avdmanager create avd -n test -k $ANDROID_EMULATOR
+## for now we donot need to create emulator.
+#RUN mkdir $ANDROID_EMULATOR_SDCARD && echo "no" | avdmanager create avd -n test -k $ANDROID_EMULATOR -v
 
 ############# deleted ##############
 #RUN echo "no" | android create avd \
@@ -86,7 +95,7 @@ RUN echo "no" | avdmanager create avd -n test -k $ANDROID_EMULATOR
 ############# deleted ##############
 
 # Cleaning
-# RUN  rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* && apt-get clean
+# RUN apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/*
 
 # GO to workspace
 RUN mkdir -p /opt/workspace
