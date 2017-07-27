@@ -2,6 +2,15 @@ FROM huaixiaoz/andocker:latest
 
 MAINTAINER huaixiaoz "hello@ifnot.cc"
 
+## ssh cannot access environment from sys, set from .bashrc or .profile
+RUN echo "\n# add Android SDK platform tools to path\
+\nif [ -d \"\$/opt/android-sdk-linux\" ] ; then\
+\n    export ANDROID_HOME=\"/opt/android-sdk-linux\"\
+\n    export ANDROID_NDK_HOME=\"/opt/android/ndk-bundle\"\
+\n    export GRADLE_HOME=\"/opt/gradle\"\
+\n    export PATH=\"\${PATH}:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${ANDROID_HOME}/platform-tool:\${ANDROID_NDK_HOME}:\${GRADLE_HOME}/bin\"\
+\nfi\n" >> ~/.profile
+
 # Install sshd
 # Install dependencies
 RUN apt-get update && apt-get upgrade -y && apt-get install \

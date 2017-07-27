@@ -18,7 +18,7 @@ before_script:
   - pwd && echo ${path} && echo ${image}
 
 script:
-  - test ${SSHD} && text ${MY} && travis_retry docker build -t ${base} . || travis_retry docker build -t ${image} .
+  - test ${SSHD} && test ${MY} && travis_retry docker build -t ${base} . || travis_retry docker build -t ${image} .
   - test ${SSHD} && travis_retry docker build -t ${base}:${SSHD} ${SSHD} || echo ${base}:"ssh build is escaped."
   - test ${MY} && travis_retry docker build --build-arg ROOT_PASSWORD=$ROOT_PASSWORD -t ${base}:${MY} ${MY} || echo ${base}:"my build is escaped."
 
