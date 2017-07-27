@@ -2,7 +2,7 @@ language: bash
 services: docker
 
 env:
-  - NDK=ndk EMULATOR=emulator
+  - NDK=ndk EMULATOR=emulator SSHD=ssh MY=my
   - NDK=ndk
   - MINIMUM=minimum
 
@@ -12,12 +12,16 @@ install:
 before_script:
   - env | sort
   - path="${NDK}${EMULATOR:+/${EMULATOR}}${MINIMUM}"
+  - base="huaixiaoz/andocker"
   - cd ${path}
-  - image="andocker:${NDK}${EMULATOR:+-$EMULATOR}${MINIMUM}"
+  - image="huaixiaoz/andocker:${NDK}${EMULATOR:+-$EMULATOR}${MINIMUM}"
   - pwd && echo ${path} && echo ${image}
 
 script:
-  - travis_retry docker build -t "$image" .
+  - test ${SSHD} && text ${MY} && travis_retry docker build -t ${base} . || travis_retry docker build -t ${image} .
+  - test ${SSHD} && travis_retry docker build -t ${base}:${SSHD} ${SSHD}
+  - test ${MY} && travis_retry docker build --build-arg ROOT_PASSWORD=$ROOT_PASSWORD -t ${base}:${MY} ${MY}
 
 after_script:
   - docker images
+  - (test ${SSHD} && text ${MY}) && (docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push ${base} && docker push ${base}:${SSHD} && docker push ${base}:${MY}) || (docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push ${image})
