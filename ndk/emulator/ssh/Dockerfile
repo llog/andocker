@@ -11,6 +11,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install \
   apt-get clean && \
   rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/*
 
+# Setup environment
+RUN useradd --shell /bin/bash --home-dir /opt/workspace --create-home --password hello hello
+
 # Exec sshd
 RUN mkdir /var/run/sshd && \
   echo 'root:root' | chpasswd && \

@@ -19,9 +19,9 @@ before_script:
 
 script:
   - test ${SSHD} && text ${MY} && travis_retry docker build -t ${base} . || travis_retry docker build -t ${image} .
-  - test ${SSHD} && travis_retry docker build -t ${base}:${SSHD} ${SSHD}
-  - test ${MY} && travis_retry docker build --build-arg ROOT_PASSWORD=$ROOT_PASSWORD -t ${base}:${MY} ${MY}
+  - test ${SSHD} && travis_retry docker build -t ${base}:${SSHD} ${SSHD} || echo ${base}:"ssh build is escaped."
+  - test ${MY} && travis_retry docker build --build-arg ROOT_PASSWORD=$ROOT_PASSWORD -t ${base}:${MY} ${MY} || echo ${base}:"my build is escaped."
 
 after_script:
   - docker images
-  - (test ${SSHD} && text ${MY}) && (docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push ${base} && docker push ${base}:${SSHD} && docker push ${base}:${MY}) || (docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push ${image})
+  - (test ${SSHD} && test ${MY}) && (docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push ${base} && docker push ${base}:${SSHD} && docker push ${base}:${MY}) || (docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push ${image})
