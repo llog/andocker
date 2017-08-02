@@ -63,6 +63,7 @@ RUN echo "yes" | sdkmanager --update
 ### install package
 ENV ANDROID_PACKAGES "build-tools;26.0.0 build-tools;25.0.3 platforms;android-25 platforms;android-26 platform-tools emulator patcher;v4 extras;android;m2repository extras;google;google_play_services extras;google;instantapps extras;google;m2repository ndk-bundle system-images;android-26;google_apis_playstore;x86"
 RUN echo "yes" | sdkmanager $ANDROID_PACKAGES
+RUN echo "yes" | sdkmanager --update
 
 ############# deleted ##############
 # Setup environment
