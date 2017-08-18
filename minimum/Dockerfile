@@ -36,7 +36,8 @@ RUN apt-get update && apt-get install -y psmisc htop vim make tree bash-completi
 ARG SDK_TOOL_FILENAME=sdk-tools-linux-3859397.zip
 ENV SDK_TOOL_URL=https://dl.google.com/android/repository/$SDK_TOOL_FILENAME \
   GRADLE_HOME="/opt/gradle" \
-  GRADLE_VERSION=4.0.2 \
+  GRADLE_VERSION=4.1 \
+  TERM=xterm \
   ANDROID_HOME="/opt/android" \
 #  ANDROID_NDK_HOME="/opt/android/ndk-bundle" \
   ANDROID_BUILD_TOOLS_VERSION=26.0.0
