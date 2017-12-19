@@ -36,11 +36,11 @@ RUN apt-get update && apt-get install -y psmisc htop vim make tree bash-completi
 ARG SDK_TOOL_FILENAME=sdk-tools-linux-3859397.zip
 ENV SDK_TOOL_URL=https://dl.google.com/android/repository/$SDK_TOOL_FILENAME \
   GRADLE_HOME="/opt/gradle" \
-  GRADLE_VERSION=4.1 \
+  GRADLE_VERSION=4.4 \
   TERM=xterm \
   ANDROID_HOME="/opt/android" \
 #  ANDROID_NDK_HOME="/opt/android/ndk-bundle" \
-  ANDROID_BUILD_TOOLS_VERSION=26.0.0
+  ANDROID_BUILD_TOOLS_VERSION=27.0.2
 #  ANDROID_TOOLS=tools \
 ENV  PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$GRADLE_HOME/bin
 ## $ANDROID_NDK_HOME
@@ -48,22 +48,22 @@ ENV  PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platfo
 ## Install Gradle
 Run cd /opt && \
   wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
-  unzip gradle.zip && \
+  unzip -qq gradle.zip && \
   rm gradle.zip && \
   mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}"
 
 RUN cd /opt && wget --output-document=$SDK_TOOL_FILENAME --quiet $SDK_TOOL_URL && \
-  unzip $SDK_TOOL_FILENAME -d $ANDROID_HOME && rm -f $SDK_TOOL_FILENAME   && chown -R root.root $ANDROID_HOME
+  unzip -qq $SDK_TOOL_FILENAME -d $ANDROID_HOME && rm -f $SDK_TOOL_FILENAME   && chown -R root.root $ANDROID_HOME
 
 ############# deleted ##############
 # RUN cd /opt && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz && tar xzf android-sdk.tgz && rm -f android-sdk.tgz && chown -R root.root android-sdk-linux
-# RUN cd /opt && wget --output-document=android-ndk-r11c-linux-x86_64.zip --quiet http://dl.google.com/android/repository/android-ndk-r11c-linux-x86_64.zip && unzip android-ndk-r11c-linux-x86_64.zip && rm -f android-ndk-r11c-linux-x86_64.zip && chown -R root.root android-ndk-r11c
+# RUN cd /opt && wget --output-document=android-ndk-r11c-linux-x86_64.zip --quiet http://dl.google.com/android/repository/android-ndk-r11c-linux-x86_64.zip && unzip -qq android-ndk-r11c-linux-x86_64.zip && rm -f android-ndk-r11c-linux-x86_64.zip && chown -R root.root android-ndk-r11c
 ############# deleted ##############
 
 ### update tools
 RUN echo "yes" | sdkmanager --update
 ### install package
-ENV ANDROID_PACKAGES "build-tools;26.0.0 build-tools;25.0.3 platforms;android-25 platforms;android-26 platform-tools emulator patcher;v4 extras;android;m2repository extras;google;google_play_services extras;google;instantapps extras;google;m2repository"
+ENV ANDROID_PACKAGES "build-tools;27.0.2 platforms;android-27 platform-tools emulator patcher;v4 extras;android;m2repository extras;google;google_play_services extras;google;instantapps extras;google;m2repository"
 ## ndk-bundle system-images;android-26;google_apis_playstore;x86"
 RUN echo "yes" | sdkmanager $ANDROID_PACKAGES
 RUN echo "yes" | sdkmanager --update
