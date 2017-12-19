@@ -60,12 +60,12 @@ RUN cd /opt && wget --output-document=$SDK_TOOL_FILENAME --quiet $SDK_TOOL_URL &
 ############# deleted ##############
 
 ### update tools
-RUN echo "yes" | sdkmanager --update
+RUN echo "yes" | sdkmanager --update > output.log 2>&1 && tail -100 output.log && rm -rf output.log
 ### install package
 ENV ANDROID_PACKAGES "build-tools;27.0.2 platforms;android-27 platform-tools emulator patcher;v4 extras;android;m2repository extras;google;google_play_services extras;google;instantapps extras;google;m2repository ndk-bundle"
 #system-images;android-26;google_apis_playstore;x86"
-RUN echo "yes" | sdkmanager $ANDROID_PACKAGES
-RUN echo "yes" | sdkmanager --update
+RUN echo "yes" | sdkmanager $ANDROID_PACKAGES > output.log 2>&1 && tail -100 output.log && rm -rf output.log
+RUN echo "yes" | sdkmanager --update > output.log 2>&1 && tail -100 output.log && rm -rf output.log
 
 ############# deleted ##############
 # Setup environment
